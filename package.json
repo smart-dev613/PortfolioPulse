@@ -1,0 +1,14 @@
+{
+  "name": "cryptovault-portfolio-manager",
+  "version": "1.0.0",
+  "description": "A decentralized crypto portfolio manager with live token tracking and authentication",
+  "keywords": ["crypto", "portfolio", "decentralized", "solana", "trading", "defi"],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/cryptovault-portfolio-manager"
+  },
+  "homepage": "https://your-deployed-url.onrender.com"
+}
+
