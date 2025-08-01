@@ -3,7 +3,7 @@ services:
     name: portfolio-frontend
     env: static
     plan: free
-    buildCommand: npm install --legacy-peer-deps && npm run build
+    buildCommand: npm install --force && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
