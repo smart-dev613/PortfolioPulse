@@ -114,9 +114,14 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             <Button
               className="w-full"
               disabled={!phraseConfirmed}
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                // Close the recovery phrase dialog and continue to portfolio
+                setShowRecoveryPhrase(false);
+                setPhraseConfirmed(false);
+                // The user will be automatically logged in and redirected to dashboard
+              }}
             >
-              Continue to Portfolio
+              I Confirm - Continue to Portfolio
             </Button>
           </div>
         </CardContent>

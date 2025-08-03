@@ -2,7 +2,7 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AuthPage from './components/auth/AuthPage';
-import SimpleDashboard from './components/portfolio/SimpleDashboard';
+import EnhancedDashboard from './components/portfolio/EnhancedDashboard';
 import client from './lib/apollo';
 import './App.css';
 
@@ -20,7 +20,7 @@ function AppContent() {
     );
   }
 
-  return user ? <SimpleDashboard /> : <AuthPage />;
+  return user ? <EnhancedDashboard /> : <AuthPage />;
 }
 
 function App() {
