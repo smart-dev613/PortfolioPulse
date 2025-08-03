@@ -24,10 +24,12 @@ const EnhancedDashboard = () => {
   });
   const [showAddDialog, setShowAddDialog] = useState(false);
 
-  const { data: portfolioData, refetch: refetchPortfolio } = useQuery(GET_PORTFOLIO, {
+  // Add error handling to the portfolio query
+  const { data: portfolioData, refetch: refetchPortfolio, loading: portfolioLoading, error: portfolioError } = useQuery(GET_PORTFOLIO, {
     variables: { userId: user?.id },
     skip: !user?.id,
-    pollInterval: 30000 // Refresh every 30 seconds
+    pollInterval: 30000, // Refresh every 30 seconds
+    errorPolicy: 'all' // Don't fail the entire component on query errors
   });
 
   const [searchTokens, { loading: searchLoading }] = useMutation(SEARCH_TOKENS);
@@ -109,6 +111,11 @@ const EnhancedDashboard = () => {
   const portfolio = portfolioData?.getPortfolio;
   const holdings = portfolio?.holdings || [];
 
+  // Add a simple fallback if there are errors
+  if (portfolioError) {
+    console.error('Portfolio query error:', portfolioError);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -160,31 +167,65 @@ const EnhancedDashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Total Value</p>
-                    <p className="text-3xl font-bold text-gray-900">
-                      {formatCurrency(portfolio?.totalValue || 0)}
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="text-gray-600">Holdings</p>
-                      <p className="font-medium">{holdings.length}</p>
+                  {portfolioLoading ? (
+                    <div className="text-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                      <p className="text-sm text-gray-600 mt-2">Loading portfolio...</p>
                     </div>
-                    <div>
-                      <p className="text-gray-600">Tokens</p>
-                      <p className="font-medium">
-                        {new Set(holdings.map(h => h.tokenSymbol)).size}
-                      </p>
+                  ) : portfolioError ? (
+                    <div className="text-center py-4">
+                      <Alert variant="destructive">
+                        <AlertDescription>
+                          Error loading portfolio. Please try refreshing the page.
+                        </AlertDescription>
+                      </Alert>
                     </div>
-                  </div>
+                  ) : (
+                    <>
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600">Total Value</p>
+                        <p className="text-3xl font-bold text-gray-900">
+                          {formatCurrency(portfolio?.totalValue || 0)}
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <p className="text-gray-600">Holdings</p>
+                          <p className="font-medium">{holdings.length}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Tokens</p>
+                          <p className="font-medium">
+                            {new Set(holdings.map(h => h.tokenSymbol)).size}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Holdings List */}
               <div className="lg:col-span-2 space-y-4">
                 <h3 className="text-lg font-semibold">Your Holdings</h3>
-                {holdings.length === 0 ? (
+                {portfolioLoading ? (
+                  <Card>
+                    <CardContent className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                      <p className="text-sm text-gray-600 mt-2">Loading holdings...</p>
+                    </CardContent>
+                  </Card>
+                ) : portfolioError ? (
+                  <Card>
+                    <CardContent className="text-center py-8">
+                      <Alert variant="destructive">
+                        <AlertDescription>
+                          Unable to load holdings. Please check your connection and try again.
+                        </AlertDescription>
+                      </Alert>
+                    </CardContent>
+                  </Card>
+                ) : holdings.length === 0 ? (
                   <Card>
                     <CardContent className="text-center py-8">
                       <p className="text-gray-600 mb-4">No holdings yet</p>

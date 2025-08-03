@@ -24,9 +24,10 @@ const TokenList = ({ onAddToPortfolio }) => {
     'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263'  // BONK
   ];
 
-  const { data: tokensData, loading: tokensLoading } = useQuery(GET_TOKENS, {
+  const { data: tokensData, loading: tokensLoading, error: tokensError } = useQuery(GET_TOKENS, {
     variables: { addresses: popularTokens },
-    pollInterval: 30000 // Refresh every 30 seconds
+    pollInterval: 30000, // Refresh every 30 seconds
+    errorPolicy: 'all' // Don't fail the entire component on query errors
   });
 
   const formatPrice = (price) => {
@@ -108,6 +109,24 @@ const TokenList = ({ onAddToPortfolio }) => {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <p className="text-sm text-gray-600 ml-2">Loading tokens...</p>
+      </div>
+    );
+  }
+
+  if (tokensError) {
+    console.error('Tokens query error:', tokensError);
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Live Token Data</h2>
+          <p className="text-sm text-gray-600">Real-time prices from Dexscreener API</p>
+        </div>
+        <Alert variant="destructive">
+          <AlertDescription>
+            Error loading token data. Please check your connection and try refreshing the page.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
