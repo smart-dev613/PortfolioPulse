@@ -115,14 +115,12 @@ const RegisterForm = ({ onSwitchToLogin }) => {
               className="w-full"
               disabled={!phraseConfirmed}
               onClick={() => {
-                // Close the recovery phrase dialog and continue to portfolio
                 setShowRecoveryPhrase(false);
                 setPhraseConfirmed(false);
-                // Force a page reload to ensure proper state update
-                window.location.reload();
+                // The user will be automatically logged in after registration
               }}
             >
-              I Confirm - Continue to Portfolio
+              Continue to Portfolio
             </Button>
           </div>
         </CardContent>

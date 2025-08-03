@@ -3,10 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
-const TokenCard = ({ token, onAddToPortfolio, onClick }) => {
+const TokenCard = ({ token, onAddToPortfolio }) => {
   const priceChange24h = token.priceChange?.h24 || 0;
   const volume24h = token.volume?.h24 || 0;
-  const volume3h = token.volume?.h6 || 0; // 3-hour volume (closest available)
   const liquidity = token.liquidity?.usd || 0;
   
   const formatPrice = (price) => {
@@ -32,7 +31,7 @@ const TokenCard = ({ token, onAddToPortfolio, onClick }) => {
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={onClick}>
+    <Card className="hover:shadow-lg transition-shadow cursor-pointer">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -78,16 +77,10 @@ const TokenCard = ({ token, onAddToPortfolio, onClick }) => {
           </div>
         </div>
         
-        <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-gray-600">24h Change</p>
-            <p className={`font-medium ${getPriceChangeColor(priceChange24h)}`}>
-              {priceChange24h > 0 ? '+' : ''}{priceChange24h.toFixed(2)}%
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-600">3h Volume</p>
-            <p className="font-medium">${formatNumber(volume3h)}</p>
+            <p className="text-gray-600">24h Volume</p>
+            <p className="font-medium">${formatNumber(volume24h)}</p>
           </div>
           <div>
             <p className="text-gray-600">Liquidity</p>
@@ -104,10 +97,7 @@ const TokenCard = ({ token, onAddToPortfolio, onClick }) => {
         
         {onAddToPortfolio && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToPortfolio(token);
-            }}
+            onClick={() => onAddToPortfolio(token)}
             className="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
           >
             Add to Portfolio

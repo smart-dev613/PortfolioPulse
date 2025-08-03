@@ -9,9 +9,6 @@ import './App.css';
 function AppContent() {
   const { user, loading } = useAuth();
 
-  // Debug logging
-  console.log('AppContent - user:', user, 'loading:', loading);
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -23,13 +20,7 @@ function AppContent() {
     );
   }
 
-  if (user) {
-    console.log('Rendering EnhancedDashboard for user:', user.username);
-    return <EnhancedDashboard />;
-  } else {
-    console.log('Rendering AuthPage - no user');
-    return <AuthPage />;
-  }
+  return user ? <EnhancedDashboard /> : <AuthPage />;
 }
 
 function App() {
