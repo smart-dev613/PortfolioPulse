@@ -20,12 +20,14 @@ export const AuthProvider = ({ children }) => {
   const { data: meData, refetch: refetchMe } = useQuery(GET_ME, {
     skip: !token,
     onCompleted: (data) => {
+      console.log('GET_ME completed:', data);
       if (data.me) {
         setUser(data.me);
       }
       setLoading(false);
     },
-    onError: () => {
+    onError: (error) => {
+      console.log('GET_ME error:', error);
       logout();
       setLoading(false);
     }
@@ -43,18 +45,24 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
+      console.log('Attempting login for:', username);
       const { data } = await loginMutation({
         variables: { username, password }
       });
       
+      console.log('Login response:', data);
+      
       if (data.login) {
         const { token: newToken, user: userData } = data.login;
+        console.log('Setting token and user:', { newToken, userData });
         localStorage.setItem('auth-token', newToken);
         setToken(newToken);
         setUser(userData);
+        setLoading(false);
         return { success: true, user: userData };
       }
     } catch (error) {
+      console.log('Login error:', error);
       return { success: false, error: error.message };
     }
   };
@@ -70,6 +78,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('auth-token', newToken);
         setToken(newToken);
         setUser(userData);
+        setLoading(false);
         return { success: true, user: userData };
       }
     } catch (error) {

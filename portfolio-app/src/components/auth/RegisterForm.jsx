@@ -118,7 +118,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
                 // Close the recovery phrase dialog and continue to portfolio
                 setShowRecoveryPhrase(false);
                 setPhraseConfirmed(false);
-                // The user will be automatically logged in and redirected to dashboard
+                // Force a page reload to ensure proper state update
+                window.location.reload();
               }}
             >
               I Confirm - Continue to Portfolio
