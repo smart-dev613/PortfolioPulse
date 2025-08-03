@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { TrendingUp, TrendingDown, Plus, BarChart3 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { GET_TOKENS } from '../../lib/queries';

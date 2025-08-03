@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AuthPage from './components/auth/AuthPage';
 import EnhancedDashboard from './components/portfolio/EnhancedDashboard';
 import SimpleFallback from './components/portfolio/SimpleFallback';
+import TestDashboard from './components/portfolio/TestDashboard';
 import client from './lib/apollo';
 import './App.css';
 
@@ -21,9 +22,7 @@ function AppContent() {
     );
   }
 
-  // For now, let's use the SimpleFallback to ensure something renders
-  // This will help us debug the issue
-  return user ? <SimpleFallback /> : <AuthPage />;
+  return user ? <TestDashboard /> : <AuthPage />;
 }
 
 function App() {
