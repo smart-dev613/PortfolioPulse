@@ -127,5 +127,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export default AuthContext;
+// Remove the default export to fix Fast Refresh issue
 
